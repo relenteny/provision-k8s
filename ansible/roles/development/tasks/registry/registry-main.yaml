@@ -1,0 +1,17 @@
+- name: Check if registry is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ registry_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute registry install
+  include_tasks: registry-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute registry remove
+  include_tasks: registry-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

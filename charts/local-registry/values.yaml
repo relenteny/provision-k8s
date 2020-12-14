@@ -1,0 +1,8 @@
+ingress:
+  host: local.k8s.registry.com
+  class: nginx
+
+docker-registry:
+  persistence:
+    enabled: true
+    deleteEnabled: true

@@ -1,0 +1,9 @@
+# IDEs/Editors
+.vscode
+
+# Project
+Chart.lock
+**/charts/*.tgz
+
+# Mac
+.DS_Store

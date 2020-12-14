@@ -1,0 +1,5 @@
+- name: Check if chart is installed
+  command: helm get all {{ chart_release }} --namespace {{ chart_namespace }}
+  no_log: true
+  ignore_errors: true
+  register: chart_installed

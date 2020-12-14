@@ -1,0 +1,18 @@
+- name: Set facts
+  include_tasks: set-facts.yaml
+
+- name: Set component facts
+  include_tasks: component-facts.yaml
+
+- name: Helm update
+  include_tasks: helm-update.yaml
+  when: not uninstall|bool
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      section_begin: true
+      section_end: true
+      template: readme/common-readme.j2
+  when: not uninstall|bool

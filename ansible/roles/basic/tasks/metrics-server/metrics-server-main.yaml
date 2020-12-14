@@ -1,0 +1,17 @@
+- name: Check if Metrics Server is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ metrics_server_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute metrics server install
+  include_tasks: metrics-server-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute metrics server remove
+  include_tasks: metrics-server-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

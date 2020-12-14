@@ -1,0 +1,17 @@
+- name: Check if Kubeapps is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ kubeapps_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute Kubeapps install
+  include_tasks: kubeapps-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute Kubeapps remove
+  include_tasks: kubeapps-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

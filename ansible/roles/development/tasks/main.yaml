@@ -1,0 +1,31 @@
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      section_begin: true
+      space_after: true
+      template: readme/development-readme.j2
+  when: not uninstall|bool
+
+- name: Kubeapps
+  include_tasks: kubeapps/kubeapps-main.yaml
+  when: install_kubeapps is defined
+
+- name: Prometheus
+  include_tasks: prometheus/prometheus-main.yaml
+  when: install_prometheus is defined
+
+- name: Registry
+  include_tasks: registry/registry-main.yaml
+  when: install_registry is defined
+
+- name: Chartmuseum
+  include_tasks: chartmuseum/chartmuseum-main.yaml
+  when: install_chartmuseum is defined
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      section_end: true
+  when: not uninstall|bool

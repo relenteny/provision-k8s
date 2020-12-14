@@ -1,0 +1,18 @@
+persistence:
+  enabled: true
+
+env:
+  open:
+    STORAGE: local
+    DISABLE_API: false
+    ALLOW_OVERWRITE: true
+    CONTEXT_PATH: /chartmuseum
+
+ingress:
+  enabled: true
+  hosts:
+    - name: "{{ cluster_hostname }}"
+      path: /chartmuseum
+
+service:
+  externalPort: 80

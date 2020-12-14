@@ -1,0 +1,51 @@
+# "Constant" values that can be used for all tasks
+
+uninstall: false
+
+readme_data: []
+
+# From the environment
+cluster_hostname: "{{ lookup('env','CLUSTER_HOSTNAME') }}"
+registry_hostname: "{{ lookup('env','REGISTRY_HOSTNAME') }}"
+cluster_support_namespace: "{{ lookup('env','CLUSTER_SUPPORT_NAMESPACE') }}"
+
+# Platform on which the cluster is running
+# Docker for Desktop (Mac or Windows)
+docker_desktop_platform: "docker-desktop"
+# Minikube (currently not supported)
+minikube_platform: "minikube"
+
+# Cluster configurations
+basic_cluster_configuration: "basic"
+development_cluster_configuration: "development"
+
+# Helm Chart release names and versions
+
+# Kubernetes Dashboard
+dashboard_release: "status"
+dashboard_version: "2.8.2"
+
+# Kubernetes Metrics Server
+metrics_server_release: "metrics-api"
+metrics_server_version: "2.11.4"
+
+# NGINX cluster ingress
+cluster_ingress_release: "cluster-ingress"
+cluster_ingress_version: "3.9.0"
+cluster_ingress_class: "nginx-cluster-support"
+
+# Kubeapps Helm Chart repo web interface
+kubeapps_release: "kubeapps"
+kubeapps_version: "4.0.4"
+
+# Private Docker Registry
+registry_release: "cluster-registry"
+registry_version: "1.0.0"
+
+# Prometheus Operator
+prometheus_release: "metrics"
+prometheus_version: "9.3.2"
+
+# Chartmuseum
+chartmuseum_release: "helmrepo"
+chartmuseum_version: "2.14.1"

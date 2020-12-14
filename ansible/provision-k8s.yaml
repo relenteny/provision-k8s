@@ -1,0 +1,11 @@
+- hosts: localhost
+  vars:
+    ansible_python_interpreter: '{{ ansible_playbook_python }}'
+  tasks:
+  - include_role:
+        name: common
+        public: yes
+  - include_role:
+        name: basic
+  - include_role:
+        name: development

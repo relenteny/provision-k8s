@@ -1,0 +1,59 @@
+- name: Add Kubeapps repo
+  command: "{{ item }}"
+  with_items:
+    - helm repo add bitnami https://charts.bitnami.com/bitnami
+    - helm repo update
+
+- name: Create Kubeapps login account
+  command: "{{ item }}"
+  with_items:
+    - "kubectl create serviceaccount kubeapps-operator -n {{ cluster_support_namespace }}"
+    - "kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount={{ cluster_support_namespace }}:kubeapps-operator"
+
+- name: Get Kubeapps secret
+  shell: "kubectl get secret -n {{ cluster_support_namespace }} $(kubectl get serviceaccount kubeapps-operator -n {{ cluster_support_namespace }} -o jsonpath='{.secrets[].name}') -o jsonpath='{.data.token}' | base64 -d"
+  register: secret_result
+
+- name: Initial helm command
+  set_fact:
+    helm_command: helm install {{ kubeapps_release }} bitnami/kubeapps --namespace {{ cluster_support_namespace }} --version {{ kubeapps_version }} --set useHelm3=true
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/kubeapps/
+    mode: 0644
+  with_fileglob:
+    - kubeapps/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/kubeapps"
+
+- name: Install Kubeapps Helm Chart
+  command: "{{ helm_command }}"
+
+- name: Validate Kubeapps Installation
+  k8s:
+    kind: Deployment
+    name: "{{ kubeapps_release }}"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+      status: "True"
+    state: present
+
+- name: Delete configuration files
+  file:
+    state: absent
+    path: /tmp/kubeapps
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      space_before: true
+      template: readme/kubeapps-readme.j2

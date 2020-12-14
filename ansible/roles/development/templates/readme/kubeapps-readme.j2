@@ -1,0 +1,13 @@
+Kubeapps Information:
+---------------------
+
+    Deployed to namespace:         {{ cluster_support_namespace }}
+    Web interface is available at: http://{{ cluster_hostname }}/kubeapps
+
+    The web interface will ask for a Kubernetes API token. Below is the token to use for this installation. Copy and
+    paste it into the Token text box shown on the Kubeapps login page.
+
+{{ secret_result.stdout }}
+
+    To retrieve the token from the cluster, use this command:
+    kubectl get secret -n {{ cluster_support_namespace }} $(kubectl get serviceaccount kubeapps-operator -n {{ cluster_support_namespace }} -o jsonpath='{.secrets[].name}') -o jsonpath='{.data.token}' | base64 --decode

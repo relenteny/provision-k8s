@@ -1,0 +1,2 @@
+- name: Remove Kubernetes Dashboard Helm release
+  command: helm delete {{ dashboard_release }} --namespace {{ cluster_support_namespace }}

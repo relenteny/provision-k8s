@@ -1,0 +1,51 @@
+- name: Get deployment platform from environment
+  set_fact:
+    deployment_platform: "{{ lookup('env','DEPLOYMENT_PLATFORM') }}"
+  when: deployment_platform is undefined
+
+- name: Get name of first node to determine deployment platform
+  shell: kubectl get nodes | sed '2q;d' | cut -f1 -d' '
+  register: node_name
+  when: deployment_platform == ""
+
+- name: Check if Minikube platform
+  set_fact:
+    deployment_platform: "{{ minikube_platform }}"
+  when:
+    - deployment_platform == ""
+    - node_name.stdout == minikube_platform
+
+- name: Check if Docker for Desktop platform
+  set_fact:
+    deployment_platform: "{{ docker_desktop_platform }}"
+  when:
+    - deployment_platform == ""
+    - node_name.stdout == docker_desktop_platform
+
+- name: Set cluster configuration
+  set_fact:
+    cluster_configuration: "{{ basic_cluster_configuration }}"
+  when: cluster_configuration is not defined
+
+- name: Set ingress class
+  set_fact:
+    cluster_ingress_class: nginx
+  when: deployment_platform == minikube_platform or deployment_platform == docker_desktop_platform
+
+- name: Set output directory, if not set
+  set_fact:
+    output_directory: "{{ ansible_env.HOME }}/kubernetes/{{ deployment_platform }}"
+  when: output_root is not defined
+
+- name: Set output directory, if not set
+  set_fact:
+    output_directory: "{{ output_root }}/kubernetes/{{ deployment_platform }}"
+
+- name: Ensure output directory exists
+  file:
+    path: "{{ output_directory }}"
+    state: directory
+
+- name: Set README file
+  set_fact:
+    readme_file: "{{ output_directory }}/README-{{ deployment_platform }}-{{ ansible_date_time.iso8601 }}.txt"

@@ -1,0 +1,36 @@
+- name: Initial helm command
+  set_fact:
+    helm_command: "helm install {{ metrics_server_release }} stable/metrics-server --namespace {{ cluster_support_namespace }} --version {{ metrics_server_version }}"
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/metrics-server/
+    mode: 0644
+  with_fileglob:
+    - metrics-server/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/metrics-server"
+
+- name: Install Metrics Server Chart
+  command: "{{ helm_command }}"
+
+- name: Validate Metrics Server Installation
+  k8s:
+    kind: Deployment
+    name: "{{ metrics_server_release }}-metrics-server"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+      status: "True"
+    state: present
+
+- name: Delete configuration files
+  file:
+    state: absent
+    path: /tmp/metrics-server

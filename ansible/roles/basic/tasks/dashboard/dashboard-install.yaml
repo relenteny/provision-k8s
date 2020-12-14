@@ -1,0 +1,47 @@
+- name: Set dashboard port number
+  set_fact:
+    dashboard_port: 31000
+
+- name: Initial helm command
+  set_fact:
+    helm_command: helm install {{ dashboard_release }} kubernetes-dashboard/kubernetes-dashboard --namespace {{ cluster_support_namespace }} --version {{ dashboard_version }}
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/dashboard/
+    mode: 0644
+  with_fileglob:
+    - dashboard/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/dashboard"
+
+- name: Install dashboard Helm Chart
+  command: "{{ helm_command }}"
+
+- name: Validate dashboard Installation
+  k8s:
+    kind: Deployment
+    name: "{{ dashboard_release }}-kubernetes-dashboard"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+      status: "True"
+    state: present
+
+- name: Delete configuration files
+  file:
+    state: absent
+    path: /tmp/dashboard
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      space_before: true
+      template: readme/dashboard-readme.j2

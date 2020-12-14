@@ -1,0 +1,3 @@
+- name: Remove Registry Helm Chart
+  command: helm delete {{ registry_release }} --namespace {{ cluster_support_namespace }}
+  

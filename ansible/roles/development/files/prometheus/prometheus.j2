@@ -1,0 +1,41 @@
+alertmanager:
+  alertmanagerSpec:
+    storage: {}
+
+prometheus:
+  prometheusSpec:
+    routePrefix: /metrics/prometheus
+    storageSpec: {}
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "{{ cluster_ingress_class }}"
+    hosts:
+      - "{{ cluster_hostname }}"
+
+grafana:
+  adminPassword: "admin"
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "{{ cluster_ingress_class }}"
+      nginx.ingress.kubernetes.io/rewrite-target: "/$1"
+    path: /metrics/grafana/?(.*)
+    hosts:
+      - "{{ cluster_hostname }}"
+  persistence:
+    enabled: false
+  grafana.ini:
+    auth:
+      disable_login_form: true
+      disable_signout_menu: true
+    auth.anonymous:
+      enabled: true
+      org_name: Main Org.
+      org_role: Admin
+    auth.basic:
+      enabled: false
+    server:
+      protocol: http
+      domain: "{{ cluster_hostname }}"
+      root_url: "%(protocol)s://%(domain)s/metrics/grafana/"

@@ -1,0 +1,14 @@
+protocolHttp: true
+
+service:
+  type: NodePort
+  externalPort: 80
+  nodePort: {{ dashboard_port }}
+
+extraArgs:
+  - --enable-skip-login
+  - --enable-insecure-login
+
+metricsScraper:
+  enabled: true
+

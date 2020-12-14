@@ -1,0 +1,8 @@
+- name: Remove Kubeapps Helm Chart
+  command: helm delete {{ kubeapps_release }} --namespace {{ cluster_support_namespace }}
+
+- name: Delete Kubeapps artifacts
+  command: "{{ item }}"
+  with_items:
+    - "kubectl delete serviceaccount kubeapps-operator -n {{ cluster_support_namespace }}"
+    - "kubectl delete clusterrolebinding kubeapps-operator"

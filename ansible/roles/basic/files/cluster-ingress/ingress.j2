@@ -1,0 +1,12 @@
+controller:
+  ingressClass: "{{ cluster_ingress_class }}"
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  extraArgs:
+    enable-ssl-passthrough: ""
+
+  metrics:
+    enabled: true
+
+ingress:
+  host: "{{ cluster_hostname }}"

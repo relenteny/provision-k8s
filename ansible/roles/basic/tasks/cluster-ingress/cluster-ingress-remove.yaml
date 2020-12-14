@@ -1,0 +1,2 @@
+- name: Remove cluster ingress Helm release
+  command: helm delete {{ cluster_ingress_release }} --namespace {{ cluster_support_namespace }}

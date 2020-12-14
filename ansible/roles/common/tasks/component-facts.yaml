@@ -1,0 +1,35 @@
+- name: Set install namespaces
+  set_fact:
+    install_namespaces: true
+
+- name: Set install Dashboard
+  set_fact:
+    install_dashboard: true
+
+- name: Set install metrics server
+  set_fact:
+    install_metrics_server: true
+
+- name: Set install cluster ingress
+  set_fact:
+    install_cluster_ingress: true
+
+- name: Set install Registry
+  set_fact:
+    install_registry: true
+  when: cluster_configuration == development_cluster_configuration
+
+- name: Set install Kubeapps
+  set_fact:
+    install_kubeapps: true
+  when: cluster_configuration == development_cluster_configuration
+
+- name: Set install Prometheus
+  set_fact:
+    install_prometheus: true
+  when: cluster_configuration == development_cluster_configuration
+
+- name: Set install Chartmuseum
+  set_fact:
+    install_chartmuseum: true
+  when: cluster_configuration == development_cluster_configuration

@@ -1,0 +1,21 @@
+- name: Execute templates
+  template:
+    src: "{{ item }}"
+    dest: "{{ source_directory }}/{{ item | basename | regex_replace('.j2','.yaml') }}"
+    mode: 0644 
+  with_fileglob: "{{ source_directory }}/*.j2"
+
+- name: List values files
+  find:
+    paths: "{{ source_directory }}"
+    file_type: file
+    patterns: "*.yaml"
+  register: values_files
+
+- name: Build file list
+  set_fact:
+    helm_command: "{{ helm_command }} -f {{ item.path }}"
+  loop: "{{ values_files.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  when: values_files.matched > 0

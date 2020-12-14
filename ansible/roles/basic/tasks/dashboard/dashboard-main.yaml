@@ -1,0 +1,17 @@
+- name: Check if Kubernetes Dashboard is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ dashboard_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute Kubernetes Dashboard install
+  include_tasks: dashboard-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute Kubernetes Dashboard remove
+  include_tasks: dashboard-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

@@ -1,0 +1,44 @@
+- name: Initial helm command
+  set_fact:
+    helm_command: helm install {{ chartmuseum_release }} stable/chartmuseum --namespace {{ cluster_support_namespace }} --version {{ chartmuseum_version }}
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/chartmuseum/
+    mode: 0644
+  with_fileglob:
+    - chartmuseum/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/chartmuseum"
+
+- name: Install Chartmuseum Helm Chart
+  command: "{{ helm_command }}"
+
+- name: Validate Chartmuseum Installation
+  k8s:
+    kind: Deployment
+    name: "{{ chartmuseum_release }}-chartmuseum"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+      status: "True"
+    state: present
+
+- name: Delete configuration files
+  file:
+    state: absent
+    path: /tmp/chartmuseum
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      space_before: true
+      template: readme/chartmuseum-readme.j2
+  

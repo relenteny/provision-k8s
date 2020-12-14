@@ -1,0 +1,8 @@
+ingress:
+  host: "{{ registry_hostname }}"
+  class: "{{ cluster_ingress_class }}"
+
+docker-registry:
+  persistence:
+    enabled: true
+    deleteEnabled: true

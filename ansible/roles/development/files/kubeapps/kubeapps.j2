@@ -1,0 +1,16 @@
+apprepository:
+  initialRepos:
+  - name: stable
+    url: https://charts.helm.sh/stable
+  - name: incubator
+    url: https://charts.helm.sh/incubator
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: local
+    url: http://helmrepo-chartmuseum.{{ cluster_support_namespace }}/chartmuseum
+
+ingress:
+  enabled: true
+  hosts:
+    - name: {{ cluster_hostname }}
+      path: /kubeapps

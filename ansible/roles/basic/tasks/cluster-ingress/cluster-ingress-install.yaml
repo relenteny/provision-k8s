@@ -1,0 +1,38 @@
+- name: Install cluster ingress
+  set_fact:
+    helm_command: "helm install {{ cluster_ingress_release }} ingress-nginx/ingress-nginx --namespace {{ cluster_support_namespace }} --version {{ cluster_ingress_version }}"
+
+- name: Copy cluster ingress local configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/cluster-ingress/
+    mode: 0644
+  with_fileglob:
+    - cluster-ingress/*
+
+- name: Process cluster ingress values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/cluster-ingress"
+
+- name: Install cluster ingress Helm Chart
+  command: "{{ helm_command }}"
+
+- name: Validate cluster ingress installation
+  k8s:
+    kind: Deployment
+    name: "{{ cluster_ingress_release }}-ingress-nginx-controller"
+    namespace: "{{ cluster_support_namespace }}"
+    state: present
+
+- name: Delete cluster ingress configuration files
+  file:
+    state: absent
+    path: /tmp/cluster-ingress
+
+- name: Update cluster ingress README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      space_before: true
+      template: readme/cluster-ingress-readme.j2

@@ -1,0 +1,16 @@
+- name: "Create namespace {{ cluster_support_namespace }}"
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ cluster_support_namespace }}"
+    state: present
+  when: not uninstall|bool
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      content:
+        - "Cluster support namespace:         {{ cluster_support_namespace }}"
+
+  when: not uninstall|bool

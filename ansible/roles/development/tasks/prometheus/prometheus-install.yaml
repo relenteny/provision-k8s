@@ -1,0 +1,43 @@
+- name: Initial helm command
+  set_fact:
+    helm_command: "helm install {{ prometheus_release }} stable/prometheus-operator --namespace {{ cluster_support_namespace }} --version {{ prometheus_version }}"
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/prometheus/
+    mode: 0644
+  with_fileglob:
+    - prometheus/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/prometheus"
+
+- name: Install Prometheus Chart
+  command: "{{ helm_command }}"
+
+- name: Validate Prometheus Installation
+  k8s:
+    kind: Deployment
+    name: "{{ prometheus_release }}-grafana"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+      status: "True"
+    state: present
+
+- name: Delete configuration files
+  file:
+    state: absent
+    path: /tmp/prometheus
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      space_before: true
+      template: readme/prometheus-readme.j2

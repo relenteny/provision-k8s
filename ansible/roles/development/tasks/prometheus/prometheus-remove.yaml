@@ -1,0 +1,12 @@
+- name: Remove Prometheus Helm Chart
+  command: helm delete {{ prometheus_release }} --namespace {{ cluster_support_namespace }}
+
+- name: Remove CRDs not handled by Helm
+  command: "{{ item }}"
+  with_items:
+    - kubectl delete crd prometheuses.monitoring.coreos.com
+    - kubectl delete crd prometheusrules.monitoring.coreos.com
+    - kubectl delete crd servicemonitors.monitoring.coreos.com
+    - kubectl delete crd podmonitors.monitoring.coreos.com
+    - kubectl delete crd alertmanagers.monitoring.coreos.com
+    - kubectl delete crd thanosrulers.monitoring.coreos.com

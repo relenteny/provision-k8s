@@ -1,0 +1,17 @@
+-   name: Check if Chartmuseum is installed
+    include_tasks: templates/helm/check-release.yaml
+    vars:
+        chart_release: "{{ chartmuseum_release }}"
+        chart_namespace: "{{ cluster_support_namespace }}"
+
+-   name: Execute Chartmuseum install
+    include_tasks: chartmuseum-install.yaml
+    when:
+        - not uninstall|bool
+        - chart_installed is failed
+
+-   name: Execute Chartmuseum remove
+    include_tasks: chartmuseum-remove.yaml
+    when:
+        - uninstall|bool
+        - chart_installed is success

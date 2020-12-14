@@ -1,0 +1,58 @@
+- set_fact:
+    section_divider: "===================================================================="
+
+- shell: echo "{{ readme_line }}" >> "{{ readme_file }}"
+  loop: "['{{ section_divider }}', '']"
+  loop_control:
+    loop_var: readme_line
+  when:
+    - not uninstall|bool
+    - readme_values.section_begin is defined
+
+- shell: echo " " >> "{{ readme_file }}"
+  when:
+    - not uninstall|bool
+    - readme_values.space_before is defined
+
+- template:
+    src: "{{ readme_values.template }}"
+    dest: /tmp/readme.tmp
+    mode: 0644
+  when:
+    - not uninstall|bool
+    - readme_values.template is defined
+
+- shell: echo "{{ readme_line }}" >> "{{ readme_file }}"
+  loop: "{{ lookup('file', '/tmp/readme.tmp', errors='ignore').splitlines() }}"
+  loop_control:
+    loop_var: readme_line
+  when:
+    - not uninstall|bool
+    - readme_values.template is defined
+
+- file:
+    state: absent
+    path: /tmp/readme.tmp
+  when:
+    - not uninstall|bool
+
+- shell: echo "{{ readme_line }}" >> "{{ readme_file }}"
+  loop: "{{ readme_values.content }}"
+  loop_control:
+    loop_var: readme_line
+  when:
+    - not uninstall|bool
+    - readme_values.content is defined
+
+- shell: echo "{{ readme_line }}" >> "{{ readme_file }}"
+  loop: "['', '{{ section_divider }}']"
+  loop_control:
+    loop_var: readme_line
+  when:
+    - not uninstall|bool
+    - readme_values.section_end is defined
+
+- shell: echo " " >> "{{ readme_file }}"
+  when:
+    - not uninstall|bool
+    - readme_values.space_after is defined

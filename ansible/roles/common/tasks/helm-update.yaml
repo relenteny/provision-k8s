@@ -1,0 +1,3 @@
+- name: Ensure helm repo is up to date
+  shell: helm repo update
+  when: not uninstall|bool

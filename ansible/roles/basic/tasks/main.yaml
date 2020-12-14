@@ -1,0 +1,31 @@
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      section_begin: true
+      space_after: true
+      template: readme/basic-readme.j2
+  when: not uninstall|bool
+
+- name: Kubernetes Namespaces
+  include_tasks: namespaces.yaml
+  when: install_namespaces is defined
+
+- name: Cluster Ingress
+  include_tasks: cluster-ingress/cluster-ingress-main.yaml
+  when: install_cluster_ingress is defined
+
+- name: Kubernetes Dashboard
+  include_tasks: dashboard/dashboard-main.yaml
+  when: install_dashboard is defined
+
+- name: Metrics Server
+  include_tasks: metrics-server/metrics-server-main.yaml
+  when: install_metrics_server is defined
+
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+      section_end: true
+  when: not uninstall|bool

@@ -1,0 +1,17 @@
+- name: Check if Prometheus is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ prometheus_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute Prometheus install
+  include_tasks: prometheus-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute Prometheus remove
+  include_tasks: prometheus-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

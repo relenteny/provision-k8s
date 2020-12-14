@@ -1,0 +1,17 @@
+- name: Check if cluster ingress is installed
+  include_tasks: templates/helm/check-release.yaml
+  vars:
+    chart_release: "{{ cluster_ingress_release }}"
+    chart_namespace: "{{ cluster_support_namespace }}"
+
+- name: Execute cluster ingress install
+  include_tasks: cluster-ingress-install.yaml
+  when:
+    - not uninstall|bool
+    - chart_installed is failed
+
+- name: Execute cluster ingress remove
+  include_tasks: cluster-ingress-remove.yaml
+  when:
+    - uninstall|bool
+    - chart_installed is success

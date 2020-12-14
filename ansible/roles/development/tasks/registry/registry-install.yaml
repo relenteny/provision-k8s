@@ -1,0 +1,55 @@
+- name: Initial helm command
+  set_fact:
+    helm_command: "helm install {{ registry_release }} ../charts/local-registry --namespace {{ cluster_support_namespace }} --version {{ registry_version }}"
+
+- name: Copy configuration files
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/registry/
+    mode: 0644
+  with_fileglob:
+    - registry/*
+
+- name: Process values files
+  include_tasks: templates/helm/process-values-files.yaml
+  vars:
+    source_directory: "/tmp/registry"
+
+- name: Create cert directory
+  file:
+    path: ../charts/local-registry/cert
+    state: directory
+    mode: 0755
+
+- name: Generate registry certificate
+  command: openssl req -new -newkey rsa:4096 -days 365 -nodes -subj "/CN={{ registry_hostname }}" -keyout ../charts/local-registry/cert/registry.key -out ../charts/local-registry/cert/registry.crt
+        
+- name: Update chart dependencies
+  command: helm dependency update ../charts/local-registry
+
+- name: Install Registry Chart
+  command: "{{ helm_command }}"
+
+- name: Validate Registry Installation
+  k8s:
+    kind: Deployment
+    name: "{{ registry_release }}-docker-registry"
+    namespace: "{{ cluster_support_namespace }}"
+    wait: true
+    wait_condition:
+        reason: MinimumReplicasAvailable
+        type: Available
+        status: "True"
+    state: present
+  
+- name: Delete configuration files
+  file:
+      state: absent
+      path: /tmp/registry
+  
+- name: Update README content
+  include_tasks: templates/readme/add-readme-section.yaml
+  vars:
+    readme_values:
+    space_before: true
+    template: readme/registry-readme.j2
