@@ -7,7 +7,7 @@ registry_hostname="local.k8s.registry.${cluster_domain}"
 cluster_support_namespace="cluster-support"
 cluster_configuration="development"
 
-git_repo="git@github.com:relenteny/provision-k8s.git"
+git_repo="https://github.com/relenteny/provision-k8s.git"
 git_tag="1.0.0"
 
 if [[ "${provision_directive}" == "" ]]
