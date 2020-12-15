@@ -66,11 +66,9 @@ function validate_environment () {
 
     if [[ -d "${mapped_home}/.ssh" ]]
     then
-        setopt +o nomatch
         cp -r "${mapped_home}/.ssh" $HOME/.ssh
         chmod 700 $HOME/.ssh
         chmod 600 $HOME/.ssh/*
         chmod 644 $HOME/.ssh/*.pub
-        setopt -o nomatch
     fi
 }

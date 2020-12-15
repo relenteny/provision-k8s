@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
 provision_directive=$1
-cluster_domain="$(hostname).com"
+cluster_domain="$(hostname | tr '[:upper:]' '[:lower:]').com"
 cluster_hostname="local.k8s.${cluster_domain}"
 registry_hostname="local.k8s.registry.${cluster_domain}"
 cluster_support_namespace="cluster-support"
