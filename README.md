@@ -49,7 +49,7 @@ Kubernetes can be fairly resource intensive. Like any other technology, it depen
 
 ## Installed Components
 
-As outlined in my DZone article, ***link here***, the intention behind this provisioning process is to configured a Kubernetes cluster with a set of components that make it suitable for development and testing of Kubernetes deployments.
+As outlined in my DZone article, [I Just Installed Kubernetes on My Workstation – Now What?](https://dzone.com/articles/i-just-installed-my-own-test-kubernetes-cluster-no), the intention behind this provisioning process is to configured a Kubernetes cluster with a set of components that make it suitable for development and testing of Kubernetes deployments.
 
 While the below outlines the components installed and configured by the provisioning process, by reviewing the code and the patterns used, customizing the process, removing or adding to the components installed, is straightforward.
 
