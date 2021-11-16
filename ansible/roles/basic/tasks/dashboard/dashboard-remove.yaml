@@ -1,2 +1,5 @@
 - name: Remove Kubernetes Dashboard Helm release
   command: helm delete {{ dashboard_release }} --namespace {{ cluster_support_namespace }}
+
+- name: Remove Dashboard role binding
+  command: "kubectl delete clusterrolebinding {{ dashboard_release }}-kubernetes-dashboard"
