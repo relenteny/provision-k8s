@@ -1,6 +1,6 @@
 - name: Initial helm command
   set_fact:
-    helm_command: "helm install {{ metrics_server_release }} stable/metrics-server --namespace {{ cluster_support_namespace }} --version {{ metrics_server_version }}"
+    helm_command: "helm install {{ metrics_server_release }} metrics-server/metrics-server --namespace {{ cluster_support_namespace }} --version {{ metrics_server_version }}"
 
 - name: Copy configuration files
   copy:

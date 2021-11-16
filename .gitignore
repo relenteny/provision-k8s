@@ -4,6 +4,7 @@
 # Project
 Chart.lock
 **/charts/*.tgz
+scripts/*.tar
 
 # Mac
 .DS_Store
