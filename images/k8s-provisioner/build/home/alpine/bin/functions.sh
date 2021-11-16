@@ -1,47 +1,6 @@
 #!/bin/bash
 
-function get_response() {
-
-    prompt=$1
-    default_value=$2
-    required_message=$3
-
-    while true
-    do
-        if [[ -z "${default_value}" ]]
-        then
-            read -p "${prompt}: " response
-        else
-            read -p "${prompt} [${default_value}]: " response
-            if [[ -z "${response}" ]]
-            then
-                response=${default_value}
-            fi
-        fi
-
-        if [[ ! -z "${required_message}" && -z "${response}" ]]
-        then
-            echo "${required_message}"
-            echo ""
-        else
-            break;
-        fi
-    done
-
-    echo "${response}"
-}
-
 function validate_environment () {
-    mapped_home=${HOME}/mapped-home
-
-    if [[ ! -d "${mapped_home}" ]]
-    then
-        echo " "
-        echo "Home directory has not been mapped. This script requires a home directory bind mount."
-        echo " "
-        exit 1
-    fi
-
     if [[ -z "${CLUSTER_HOSTNAME}" ]]
     then
         echo " "
@@ -50,25 +9,32 @@ function validate_environment () {
         exit 1
     fi
 
-    if [[ ! -S "/var/run/docker.sock" ]]
-    then
-        echo " "
-        echo "/var/run/docker.sock has not been mapped. This script requires that /var/run/docker.sock be mapped."
-        echo " "
-        exit 1
-    else
-        sudo sh -c "chmod 666 /var/run/docker.sock"
-    fi
-
     mkdir -p ${HOME}/.kube
-    find ${mapped_home}/.kube -maxdepth 1 -type f -exec cp {} ${HOME}/.kube/ \;
+    cp ${HOME}/config/config ${HOME}/.kube
     chmod 600 ${HOME}/.kube/*
 
-    if [[ -d "${mapped_home}/.ssh" ]]
+    export K8S_AUTH_CONTEXT=$(kubectl config current-context)
+
+    if [[ -f "${HOME}/config/ssh.tar" ]]
     then
-        cp -r "${mapped_home}/.ssh" $HOME/.ssh
-        chmod 700 $HOME/.ssh
-        chmod 600 $HOME/.ssh/*
-        chmod 644 $HOME/.ssh/*.pub
+        cd ${HOME}
+        tar xf "${HOME}/config/ssh.tar"
+        chmod 700 ${HOME}/.ssh
+        chmod 600 ${HOME}/.ssh/*
+        chmod 644 ${HOME}/.ssh/*.pub
+    fi
+
+    if [[ -f "${HOME}/config/minikube-profiles.tar" && "${K8S_AUTH_CONTEXT}" == "minikube" ]]
+    then
+        cd ${HOME}
+        tar xf "${HOME}/config/minikube-profiles.tar"
+        cp "${HOME}/config/ca.crt" ${HOME}/.minikube/ca.crt
+        cp "${HOME}/config/ca.key" ${HOME}/.minikube/ca.key
+        sed -i "s|certificate-authority: .*|certificate-authority: ${HOME}/.minikube/ca.crt|" ${HOME}/.kube/config
+        profile=$(basename $(dirname$(cat ${HOME}/.kube/config | grep "client-certificate: " | cut -d':' -f2)))
+        sed -i "s|client-certificate: .*|client-certificate: ${HOME}/.minikube/profiles/${profile}/client.crt|" ${HOME}/.kube/config
+        sed -i "s|client-key: .*|client-key: ${HOME}/.minikube/profiles/${profile}/client.key|" ${HOME}/.kube/config
+        chmod 600 ${HOME}/.minikube/ca.key
+        chmod 644 ${HOME}/.minikube/ca.crt
     fi
 }

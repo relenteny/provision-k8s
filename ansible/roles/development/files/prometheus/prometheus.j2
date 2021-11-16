@@ -12,7 +12,20 @@ prometheus:
       kubernetes.io/ingress.class: "{{ cluster_ingress_class }}"
     hosts:
       - "{{ cluster_hostname }}"
+    paths:
+      - /metrics/prometheus
 
+prometheusOperator:
+  admissionWebhooks:
+    enabled: false
+    patch:
+      enabled: false
+  tls:
+    enabled: false
+
+prometheus-node-exporter:
+    hostRootFsMount: false
+    
 grafana:
   adminPassword: "admin"
   ingress:

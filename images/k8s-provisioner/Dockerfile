@@ -9,7 +9,7 @@ LABEL com.solutechconsulting.repository.tag=1.0.0
 LABEL com.solutechconsulting.ansible.version=2.9.12
 
 ARG KUBERNETES_VERSION=1.19.3
-ARG HELM_VERSION=3.4.2
+ARG HELM_VERSION=3.7.1
 ARG DOCKER_VERSION=20.10.0
 
 COPY --chown=alpine:alpine build/home/alpine /home/alpine
@@ -37,9 +37,13 @@ USER alpine
 
 RUN set -x && \
     chmod +x /home/alpine/bin/*.sh && \
-    helm repo add stable https://charts.helm.sh/stable && \
     helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard && \
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
+    helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server && \
+    helm repo add twuni https://helm.twun.io && \
+    helm repo add chartmuseum https://chartmuseum.github.io/charts && \
+    helm repo add bitnami https://charts.bitnami.com/bitnami && \
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && \
     ${HOME}/bin/install-requirements.sh ${HOME}/bin/requirements.txt
 
 ENTRYPOINT [ "/home/alpine/bin/docker-entrypoint.sh" ]

@@ -34,12 +34,12 @@
 
 - name: Set output directory, if not set
   set_fact:
-    output_directory: "{{ ansible_env.HOME }}/kubernetes/{{ deployment_platform }}"
+    output_directory: "{{ ansible_env.HOME }}/kubernetes/readme"
   when: output_root is not defined
 
 - name: Set output directory, if not set
   set_fact:
-    output_directory: "{{ output_root }}/kubernetes/{{ deployment_platform }}"
+    output_directory: "{{ output_root }}/kubernetes/readme"
 
 - name: Ensure output directory exists
   file:
@@ -48,4 +48,4 @@
 
 - name: Set README file
   set_fact:
-    readme_file: "{{ output_directory }}/README-{{ deployment_platform }}-{{ ansible_date_time.iso8601 }}.txt"
+    readme_file: "{{ output_directory }}/README-{{ ansible_date_time.iso8601 }}.txt"

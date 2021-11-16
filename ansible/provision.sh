@@ -2,7 +2,7 @@
 
 provision_directive=$1
 
-ansible_command="ansible-playbook --connection=local --inventory 127.0.0.1, provision-k8s.yaml -e cluster_hostname=${CLUSTER_HOSTNAME} -e cluster_hostname=${CLUSTER_HOSTNAME} -e cluster_configuration=${CLUSTER_CONFIGURATION} -e cluster_support_namespace=${CLUSTER_SUPPORT_NAMESPACE} -e output_root=/home/alpine/mapped-home"
+ansible_command="ansible-playbook --connection=local --inventory 127.0.0.1, provision-k8s.yaml -e cluster_hostname=${CLUSTER_HOSTNAME} -e cluster_configuration=${CLUSTER_CONFIGURATION} -e cluster_support_namespace=${CLUSTER_SUPPORT_NAMESPACE} -e output_root=${HOME}"
 
 if [[ "${provision_directive}" == "provision" ]]
 then

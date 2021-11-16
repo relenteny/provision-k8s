@@ -22,7 +22,7 @@
     mode: 0755
 
 - name: Generate registry certificate
-  command: openssl req -new -newkey rsa:4096 -days 365 -nodes -subj "/CN={{ registry_hostname }}" -keyout ../charts/local-registry/cert/registry.key -out ../charts/local-registry/cert/registry.crt
+  command: openssl req -newkey rsa:4096 -nodes -sha256 -subj "/CN={{ registry_hostname }}" -addext "subjectAltName = DNS:{{ registry_hostname }}" -x509 -days 365 -keyout ../charts/local-registry/cert/registry.key -out ../charts/local-registry/cert/registry.crt
         
 - name: Update chart dependencies
   command: helm dependency update ../charts/local-registry
@@ -51,5 +51,5 @@
   include_tasks: templates/readme/add-readme-section.yaml
   vars:
     readme_values:
-    space_before: true
-    template: readme/registry-readme.j2
+      space_before: true
+      template: readme/registry-readme.j2

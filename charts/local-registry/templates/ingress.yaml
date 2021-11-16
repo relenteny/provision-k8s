@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "local-registry.fullname" . }}
@@ -18,6 +18,9 @@ spec:
       http:
         paths:
           - path: /v2
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ .Release.Name }}-docker-registry
-              servicePort: 5000
+              service:
+                name: {{ .Release.Name }}-docker-registry
+                port:
+                  number: 5000

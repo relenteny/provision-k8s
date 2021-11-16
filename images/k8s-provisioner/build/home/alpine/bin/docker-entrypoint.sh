@@ -1,8 +1,6 @@
 #!/bin/bash -l
 
-option=$1
-
-case "${option}" in
+case "${PROVISION_DIRECTIVE}" in
     provision)
         ${HOME}/bin/start-provision.sh provision
         ;;
@@ -14,6 +12,6 @@ case "${option}" in
         /bin/bash -l
         ;;
     *)
-        echo "Execute option \"${option}\" is invalid. Please specify \"provision,\" \"remove,\" or \"shell.\""
+        echo "Execute option \"${PROVISION_DIRECTIVE}\" is invalid. Please specify \"provision,\" \"remove,\" or \"shell.\""
         exit 1
 esac

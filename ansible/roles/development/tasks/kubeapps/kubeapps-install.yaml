@@ -1,9 +1,3 @@
-- name: Add Kubeapps repo
-  command: "{{ item }}"
-  with_items:
-    - helm repo add bitnami https://charts.bitnami.com/bitnami
-    - helm repo update
-
 - name: Create Kubeapps login account
   command: "{{ item }}"
   with_items:
