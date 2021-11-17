@@ -37,11 +37,13 @@ USER alpine
 
 RUN set -x && \
     chmod +x /home/alpine/bin/*.sh && \
-    helm repo add stable https://charts.helm.sh/stable && \
     helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard && \
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
     helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server && \
     helm repo add twuni https://helm.twun.io && \
+    helm repo add chartmuseum https://chartmuseum.github.io/charts && \
+    helm repo add bitnami https://charts.bitnami.com/bitnami && \
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && \
     ${HOME}/bin/install-requirements.sh ${HOME}/bin/requirements.txt
 
 ENTRYPOINT [ "/home/alpine/bin/docker-entrypoint.sh" ]

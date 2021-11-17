@@ -18,6 +18,10 @@ prometheus:
 prometheusOperator:
   admissionWebhooks:
     enabled: false
+    patch:
+      enabled: false
+  tlsProxy:
+    enabled: false
 
 grafana:
   adminPassword: "admin"
