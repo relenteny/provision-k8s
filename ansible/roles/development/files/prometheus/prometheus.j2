@@ -15,6 +15,10 @@ prometheus:
     paths:
       - /metrics/prometheus
 
+prometheusOperator:
+  admissionWebhooks:
+    enabled: false
+
 grafana:
   adminPassword: "admin"
   ingress:

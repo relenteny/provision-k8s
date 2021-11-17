@@ -48,4 +48,4 @@ prometheus_version: "20.0.1"
 
 # Chartmuseum
 chartmuseum_release: "helmrepo"
-chartmuseum_version: "2.14.1"
+chartmuseum_version: "3.3.0"

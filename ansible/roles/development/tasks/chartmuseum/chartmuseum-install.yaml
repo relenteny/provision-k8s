@@ -1,6 +1,12 @@
+- name: Add Chartmuseum repo
+  command: "{{ item }}"
+  with_items:
+    - helm repo add chartmuseum https://chartmuseum.github.io/charts
+    - helm repo update
+
 - name: Initial helm command
   set_fact:
-    helm_command: helm install {{ chartmuseum_release }} stable/chartmuseum --namespace {{ cluster_support_namespace }} --version {{ chartmuseum_version }}
+    helm_command: helm install {{ chartmuseum_release }} chartmuseum/chartmuseum --namespace {{ cluster_support_namespace }} --version {{ chartmuseum_version }}
 
 - name: Copy configuration files
   copy:
