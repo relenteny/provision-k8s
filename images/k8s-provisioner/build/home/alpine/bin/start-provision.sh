@@ -9,15 +9,23 @@ echo " "
 
 validate_environment
 
-# Update container hosts file
-sudo bash -c 'docker_ip=$(dig +short host.docker.internal);grep -q -F "${docker_ip}   ${CLUSTER_HOSTNAME}" /etc/hosts || echo "${docker_ip}   ${CLUSTER_HOSTNAME}" >> /etc/hosts'
+mkdir -p "${HOME}/kubernetes"
 
-cd "${mapped_home}/kubernetes/provision-k8s/ansible"  || { echo "Error changing to ${mapped_home}/Kubernetes/provision-k8s."; exit 1; }
+cd "${HOME}/kubernetes" || { echo "Error creating ${HOME}/kubernetes directory."; exit 1; }
+rm -rf ./provision-k8s
+
+git clone ${GIT_REPO}
+
+cd provision-k8s || { echo "Error with provision-k8s directory."; exit 1; }
+git checkout ${GIT_TAG}
+
+cd "${HOME}/kubernetes/provision-k8s/ansible"  || { echo "Error changing to ${HOME}/Kubernetes/provision-k8s."; exit 1; }
 
 if [[ -f "provision.sh" ]]
 then
     chmod +x ./provision.sh
     ./provision.sh ${provision_directive}
+    # Hold until provision script copies README from container.
 else
     echo "Unable to execute \"provision.sh.\" Ensure the Git project has a script named \"provision.sh\" in the ~/kubernetes/provision-k8s/ansible subdirectory."
     exit 1

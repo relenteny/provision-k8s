@@ -20,9 +20,12 @@ prometheusOperator:
     enabled: false
     patch:
       enabled: false
-  tlsProxy:
+  tls:
     enabled: false
 
+prometheus-node-exporter:
+    hostRootFsMount: false
+    
 grafana:
   adminPassword: "admin"
   ingress:
