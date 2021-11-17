@@ -3,7 +3,7 @@
     dashboard_port: 31000
 
 - name: Enable cluster admin for Dashboard account
-  command: "kubectl create clusterrolebinding {{ dashboard-release }}-kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount={{ cluster_support_namespace }}:{{ dashboard_release }}-kubernetes-dashboard"
+  command: kubectl create clusterrolebinding {{ dashboard_release }}-kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount={{ cluster_support_namespace }}:{{ dashboard_release }}-kubernetes-dashboard
 
 - name: Initial helm command
   set_fact:

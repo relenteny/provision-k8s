@@ -12,6 +12,8 @@ prometheus:
       kubernetes.io/ingress.class: "{{ cluster_ingress_class }}"
     hosts:
       - "{{ cluster_hostname }}"
+    paths:
+      - /metrics/prometheus
 
 grafana:
   adminPassword: "admin"

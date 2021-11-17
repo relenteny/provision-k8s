@@ -44,7 +44,7 @@ registry_version: "1.0.0"
 
 # Prometheus Operator
 prometheus_release: "metrics"
-prometheus_version: "9.3.2"
+prometheus_version: "20.0.1"
 
 # Chartmuseum
 chartmuseum_release: "helmrepo"

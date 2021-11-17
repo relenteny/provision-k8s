@@ -1,6 +1,12 @@
+- name: Add Prometheus repo
+  command: "{{ item }}"
+  with_items:
+    - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    - helm repo update
+
 - name: Initial helm command
   set_fact:
-    helm_command: "helm install {{ prometheus_release }} stable/prometheus-operator --namespace {{ cluster_support_namespace }} --version {{ prometheus_version }}"
+    helm_command: "helm install {{ prometheus_release }} prometheus-community/kube-prometheus-stack --namespace {{ cluster_support_namespace }} --version {{ prometheus_version }}"
 
 - name: Copy configuration files
   copy:
