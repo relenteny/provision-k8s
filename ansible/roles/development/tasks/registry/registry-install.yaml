@@ -51,5 +51,5 @@
   include_tasks: templates/readme/add-readme-section.yaml
   vars:
     readme_values:
-    space_before: true
-    template: readme/registry-readme.j2
+      space_before: true
+      template: readme/registry-readme.j2
