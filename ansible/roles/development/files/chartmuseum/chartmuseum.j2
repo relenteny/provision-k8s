@@ -10,6 +10,8 @@ env:
 
 ingress:
   enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "{{ cluster_ingress_class }}"
   hosts:
     - name: "{{ cluster_hostname }}"
       path: /chartmuseum
