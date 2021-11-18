@@ -5,6 +5,19 @@ apprepository:
   - name: local
     url: http://helmrepo-chartmuseum.{{ cluster_support_namespace }}/chartmuseum
 
+frontend:
+  replicaCount: 1
+
+dashboard:
+  replicaCount: 1
+  
+kubeops:
+  replicaCount: 1
+  
+postgresql:
+  replication:
+    enabled: false
+
 ingress:
   enabled: true
   hostname: {{ cluster_hostname }}
