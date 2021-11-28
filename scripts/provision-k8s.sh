@@ -159,8 +159,8 @@ if [[ -n "${minikube_ip}" && "${provision_directive}" == "provision" ]]
 then
     mkdir -p ${HOME}/.minikube/files/etc/docker/certs.d/${registry_hostname}
     kubectl get secret cluster-registry-local-registry-ingress -n ${cluster_support_namespace} -o go-template='{{index .data "tls.crt"|base64decode}}' > ${HOME}/.minikube/files/etc/docker/certs.d/${registry_hostname}/ca.crt
-    minikube ssh 'cat /etc/hosts' > ${HOME}/.minikube/files/etc/hosts
-    grep -q -F "${hosts_ip}       ${registry_hostname}" ${HOME}/.minikube/files/etc/hosts || echo "${hosts_ip}       ${registry_hostname}" | tee -a ${HOME}/.minikube/files/etc/hosts > /dev/null
+    echo "127.0.0.1       localhost minikube" > ${HOME}/.minikube/files/etc/hosts
+    echo "${hosts_ip}       ${registry_hostname}" >> ${HOME}/.minikube/files/etc/hosts
     minikube cp ${HOME}/.minikube/files/etc/hosts minikube:/etc/hosts
     minikube ssh "sudo mkdir -p /etc/docker/certs.d/${registry_hostname}"
     minikube cp ${HOME}/.minikube/files/etc/docker/certs.d/${registry_hostname}/ca.crt minikube:/etc/docker/certs.d/${registry_hostname}/ca.crt
