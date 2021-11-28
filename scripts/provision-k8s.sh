@@ -150,8 +150,10 @@ readme_configmap=$(date "+%d%m%Y-%H%M")
 readme_configmap="readme-${readme_configmap}"
 echo "README_CONFIGMAP=${readme_configmap}" >> pod-env.txt
 
+cd scripts
 chmod +x "create-pod.sh"
 ./create-pod.sh
+cd ${HOME}/kubernetes/provision-k8s
 
 if [[ -n "${minikube_ip}" ]]
 then
