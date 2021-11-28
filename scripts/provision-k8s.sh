@@ -155,7 +155,7 @@ chmod +x "create-pod.sh"
 ./create-pod.sh
 cd ${HOME}/kubernetes/provision-k8s
 
-if [[ -n "${minikube_ip}" ]]
+if [[ -n "${minikube_ip}" && "${provision_directive}" == "provision" ]]
 then
     mkdir -p ${HOME}/.minikube/files/etc/docker/certs.d/${registry_hostname}
     kubectl get secret cluster-registry-local-registry-ingress -n ${cluster_support_namespace} -o go-template='{{index .data "tls.crt"|base64decode}}' > ${HOME}/.minikube/files/etc/docker/certs.d/${registry_hostname}/ca.crt
