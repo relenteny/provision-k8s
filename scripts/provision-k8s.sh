@@ -98,10 +98,6 @@ git clone ${git_repo}
 cd provision-k8s || { echo "Error with provision-k8s directory."; exit 1; }
 git checkout ${git_tag}
 
-# TODO remove copy
-cp ${cwd}/create-pod.sh ${HOME}/kubernetes/provision-k8s
-cp ${cwd}/provision-pod.yaml ${HOME}/kubernetes/provision-k8s
-
 image_output=$(docker image ls --format "{{.Repository}}:{{.Tag}}" | grep "k8s-provisioner:${provisioner_image_version}")
 if [[ -z "${image_output}" ]]
 then
