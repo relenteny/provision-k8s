@@ -167,7 +167,7 @@ then
 fi
 
 cd "${HOME}/kubernetes" || { echo "Error with kubernetes directory."; exit 1; }
-# rm -rf provision-k8s
+rm -rf provision-k8s
 
 if [[ "${provision_directive}" == "provision" ]]
 then
