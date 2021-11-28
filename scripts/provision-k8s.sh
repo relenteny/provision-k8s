@@ -80,6 +80,7 @@ then
     if [[ $? == 0 ]]
     then
         hosts_ip=${minikube_ip}
+        eval $(minikube -p minikube docker-env)
         minikube_options="-e \"CLUSTER_IP=${minikube_ip}\" --network host"
     fi
 fi
