@@ -138,17 +138,17 @@ fi
 
 cd ${HOME}/kubernetes/provision-k8s
 
-echo "CLUSTER_HOSTNAME=${cluster_hostname}" > pod-env.txt
-echo "REGISTRY_HOSTNAME=${registry_hostname}" >> pod-env.txt
-echo "CLUSTER_SUPPORT_NAMESPACE=${cluster_support_namespace}" >> pod-env.txt
-echo "PROVISION_NAMESPACE=${provision_namespace}" >> pod-env.txt
-echo "CLUSTER_CONFIGURATION=${cluster_configuration}" >> pod-env.txt
-echo "GIT_REPO=${git_repo}" >> pod-env.txt
-echo "GIT_TAG=${git_tag}" >> pod-env.txt
-echo "PROVISION_DIRECTIVE=${provision_directive}" >> pod-env.txt
+echo "CLUSTER_HOSTNAME=${cluster_hostname}" > scripts/pod-env.txt
+echo "REGISTRY_HOSTNAME=${registry_hostname}" >> scripts/pod-env.txt
+echo "CLUSTER_SUPPORT_NAMESPACE=${cluster_support_namespace}" >> scripts/pod-env.txt
+echo "PROVISION_NAMESPACE=${provision_namespace}" >> scripts/pod-env.txt
+echo "CLUSTER_CONFIGURATION=${cluster_configuration}" >> scripts/pod-env.txt
+echo "GIT_REPO=${git_repo}" >> scripts/pod-env.txt
+echo "GIT_TAG=${git_tag}" >> scripts/pod-env.txt
+echo "PROVISION_DIRECTIVE=${provision_directive}" >> scripts/pod-env.txt
 readme_configmap=$(date "+%d%m%Y-%H%M")
 readme_configmap="readme-${readme_configmap}"
-echo "README_CONFIGMAP=${readme_configmap}" >> pod-env.txt
+echo "README_CONFIGMAP=${readme_configmap}" >> scripts/pod-env.txt
 
 cd scripts
 chmod +x "create-pod.sh"
@@ -167,7 +167,7 @@ then
 fi
 
 cd "${HOME}/kubernetes" || { echo "Error with kubernetes directory."; exit 1; }
-rm -rf provision-k8s
+# rm -rf provision-k8s
 
 if [[ "${provision_directive}" == "provision" ]]
 then

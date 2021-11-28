@@ -1,5 +1,2 @@
 - name: Remove Metrics Server Helm Chart
   command: helm delete {{ metrics_server_release }} --namespace {{ cluster_support_namespace }}
-
-- name: Remove Metrics server api service
-  command: "kubectl delete apiservice v1beta1.metrics.k8s.io"
