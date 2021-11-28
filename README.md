@@ -2,9 +2,9 @@
 
 The objective of this code base is to provide a pattern by which functionality can be added to an existing Kubernetes Cluster. It is geared toward personal development/test clusters, but is capable of configuring just about any type of Kubernetes cluster.
 
-Currently, this version of the provisioning process supports Docker for Windows and Docker for Mac. This is based on real world experience, working alongside developers who are interested in learning about Docker and find the installation and configuration process for both environments straightforward. Some basic testing has been done with minikube, but full support is not quite there yet.
+Currently, this version of the provisioning process supports Docker for Windows and Docker for Mac and minikube.
 
-Based on years of experience dealing with environmental issues across local workstation environments, the approach taken here is to provision a Kubernetes cluster using a prebuilt Docker image. Doing this provides a more stable environment from which a cluster may be configured. It's not foolproof, but it significantly decreases the challenges faced when trying to provide this type of functionality across a myriad of workstation configurations on multiple operating systems.
+Based on experience dealing with environmental issues across local workstation environments, the approach taken here is to provision a Kubernetes cluster using a prebuilt Docker image. Doing this provides a more stable environment from which a cluster may be configured. It's not foolproof, but it significantly decreases the challenges faced when trying to provide this type of functionality across a myriad of workstation configurations on multiple operating systems.
 
 In addition, to support the ever advancing state of this technology, as part of the provisioning process, the Docker image used is built at provisioning time. If clusters are re-provisioned, the Docker image is not rebuilt; shortening the time require to re-provision a cluster.
 
@@ -47,6 +47,12 @@ Kubernetes can be fairly resource intensive. Like any other technology, it depen
 * Once provisioned, to interact with the Kubernetes cluster, a WSL2 session is not required. All functionality will be available from the Windows command line as well.
 * If you plan to use Helm from the Windows command line, you will need to install it. The process is outlined on the Helm website at [Installing Helm](https://helm.sh/docs/intro/install/).
 
+#### minikube
+
+* The script expects the default profile, `minikube` to be the active profile.
+* The docker and kubectl commands must be available.
+* For a brief time, the provisioning script requires sudo/root privileges. This is to update `/etc/hosts` with cluster host information.
+* The script will create files used when running the cluster located in `~/.minikube/files`. 
 ## Installed Components
 
 As outlined in my DZone article, [I Just Installed Kubernetes on My Workstation – Now What?](https://dzone.com/articles/i-just-installed-my-own-test-kubernetes-cluster-no), the intention behind this provisioning process is to configured a Kubernetes cluster with a set of components that make it suitable for development and testing of Kubernetes deployments.
