@@ -1,0 +1,27 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-provisioner
+spec:
+  containers:
+  - name: k8s-provisioner
+    image: k8s-provisioner:1.0.0
+    imagePullPolicy: IfNotPresent
+    stdin: true
+    tty: true
+    envFrom:
+      - configMapRef:
+          name:  provision-k8s-env
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 1000m
+    volumeMounts:
+      - mountPath: /home/alpine/config
+        name: provision-config
+  restartPolicy: Never
+  volumes:
+    - name: provision-config
+      configMap:
+          name: provision-k8s-volume

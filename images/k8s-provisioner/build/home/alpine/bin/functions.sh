@@ -9,11 +9,11 @@ function validate_environment () {
         exit 1
     fi
 
-    export K8S_AUTH_CONTEXT=$(kubectl config current-context)
-
     mkdir -p ${HOME}/.kube
     cp ${HOME}/config/config ${HOME}/.kube
     chmod 600 ${HOME}/.kube/*
+
+    export K8S_AUTH_CONTEXT=$(kubectl config current-context)
 
     if [[ -f "${HOME}/config/ssh.tar" ]]
     then

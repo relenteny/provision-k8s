@@ -25,8 +25,11 @@ if [[ -f "provision.sh" ]]
 then
     chmod +x ./provision.sh
     ./provision.sh ${provision_directive}
-    readme_file=$(ls ${HOME}/kubernetes | grep README | head -1)
-    kubectl create configmap -n ${CLUSTER_SUPPORT_NAMESPACE} ${README_CONFIGMAP} "--from-file=${HOME}/kubernetes/${readme_file}" "--from-literal=filename=${readme_file}"
+    if [[ "${provision_directive}" == "provision" ]]
+    then
+        readme_file=$(ls ${HOME}/kubernetes/readme | grep README | head -1)
+        kubectl create configmap -n ${PROVISION_NAMESPACE} ${README_CONFIGMAP} "--from-file=content=${HOME}/kubernetes/readme/${readme_file}" "--from-literal=filename=${readme_file}"
+    fi
 else
     echo "Unable to execute \"provision.sh.\" Ensure the Git project has a script named \"provision.sh\" in the ~/kubernetes/provision-k8s/ansible subdirectory."
     exit 1
