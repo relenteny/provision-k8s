@@ -23,7 +23,7 @@ provision-k8s
 
 ## Prerequisites
 
-As mentioned above, the current provisioning process assumes Docker for Windows or Docker for Mac, respectively, are installed and that the Kubernetes functionality has been enabled. Links to the specific installation packages are found on the Docker website on the [Docker Desktop overview](https://docs.docker.com/desktop/) page. This process has been tested against Docker for Mac/Windows 3.0.
+As mentioned above, the current provisioning process assumes Docker for Windows or Docker for Mac, or minkube, are installed and that the Kubernetes functionality has been enabled. Links to the specific installation packages are found on the Docker website on the [Docker Desktop overview](https://docs.docker.com/desktop/) and [minikube](https://minikube.sigs.k8s.io/docs/) pages. This process has been tested against Docker for Mac/Windows 4.2.0 and minikube 1.24.0.
 
 ### Resources
 
