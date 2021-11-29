@@ -101,7 +101,7 @@ To execute the provisioning process, use the following command:
 * Make the script executable `chmod +x provision-k8s.sh`
 * Execute the script `./provision-k8s.sh`
 
-The provision process creates a README file in `${HOME}/kubernetes/docker-desktop`. Upon successful operation, it will contain information regarding the outcome of the process including links that can be used to access installed components.
+The provision process creates a README file in `${HOME}/kubernetes/readme`. Upon successful operation, it will contain information regarding the outcome of the process including links that can be used to access installed components.
 
 The provisioning process also supports removing the installed components. It can be executed using the following invocation:
 
