@@ -4,7 +4,8 @@ provision_directive=$1
 
 cwd=$(pwd)
 
-cluster_domain="$(hostname | tr '[:upper:]' '[:lower:]').com"
+# cluster_domain="$(hostname | tr '[:upper:]' '[:lower:]').com"
+cluster_domain="soltech"
 cluster_hostname="local.k8s.${cluster_domain}"
 registry_hostname="local.k8s.registry.${cluster_domain}"
 cluster_support_namespace="cluster-support"
@@ -16,7 +17,7 @@ helm_dist_version="3.7.1"
 
 git_repo="https://github.com/relenteny/provision-k8s.git"
 # TODO Update tag
-git_tag="main"
+git_tag="soltech"
 
 if [[ -z "${provision_directive}" ]]
 then
