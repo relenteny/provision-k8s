@@ -27,7 +27,7 @@ dashboard_version: "5.0.4"
 
 # Kubernetes Metrics Server
 metrics_server_release: "metrics-api"
-metrics_server_version: "3.6.0"
+metrics_server_version: "3.8.2"
 
 # NGINX cluster ingress
 cluster_ingress_release: "cluster-ingress"
