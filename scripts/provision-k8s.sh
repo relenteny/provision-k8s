@@ -15,7 +15,7 @@ cluster_configuration="development"
 provisioner_image_version="1.0.0"
 helm_dist_version="3.7.1"
 
-git_repo="https://github.com/soltech/provision-k8s.git"
+git_repo="ssh://github.com/soltech/provision-k8s.git"
 # TODO Update tag
 git_tag="soltech"
 
