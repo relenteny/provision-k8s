@@ -8,7 +8,7 @@
 
 - name: Set install metrics server
   set_fact:
-    install_metrics_server: true
+    install_metrics_server: false
 
 - name: Set install cluster ingress
   set_fact:
@@ -21,12 +21,12 @@
 
 - name: Set install Kubeapps
   set_fact:
-    install_kubeapps: true
+    install_kubeapps: false
   when: cluster_configuration == development_cluster_configuration
 
 - name: Set install Prometheus
   set_fact:
-    install_prometheus: true
+    install_prometheus: false
   when: cluster_configuration == development_cluster_configuration
 
 - name: Set install Chartmuseum
