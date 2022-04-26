@@ -18,6 +18,7 @@ minikube_platform: "minikube"
 # Cluster configurations
 basic_cluster_configuration: "basic"
 development_cluster_configuration: "development"
+production_cluster_configuration: "production"
 
 # Helm Chart release names and versions
 
