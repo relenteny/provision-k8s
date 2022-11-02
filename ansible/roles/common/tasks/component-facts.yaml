@@ -22,12 +22,12 @@
 - name: Set install Kubeapps
   set_fact:
     install_kubeapps: true
-  when: cluster_configuration == development_cluster_configuration
+  when: cluster_configuration == production_cluster_configuration
 
 - name: Set install Prometheus
   set_fact:
     install_prometheus: true
-  when: cluster_configuration == development_cluster_configuration
+  when: cluster_configuration == production_cluster_configuration
 
 - name: Set install Chartmuseum
   set_fact:
