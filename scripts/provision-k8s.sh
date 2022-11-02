@@ -12,7 +12,7 @@ provision_namespace="provision-k8s"
 cluster_configuration="development"
 
 provisioner_image_version="1.0.0"
-helm_dist_version="3.7.1"
+helm_dist_version="3.10.1"
 
 git_repo="https://github.com/relenteny/provision-k8s.git"
 # TODO Update tag

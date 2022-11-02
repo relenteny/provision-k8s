@@ -8,9 +8,9 @@ LABEL com.solutechconsulting.repository.url=https://github.com/relenteny/provisi
 LABEL com.solutechconsulting.repository.tag=1.0.0
 LABEL com.solutechconsulting.ansible.version=2.9.12
 
-ARG KUBERNETES_VERSION=1.19.3
-ARG HELM_VERSION=3.7.1
-ARG DOCKER_VERSION=20.10.0
+ARG KUBERNETES_VERSION=1.25.2
+ARG HELM_VERSION=3.10.1
+ARG DOCKER_VERSION=20.10.20
 
 COPY --chown=alpine:alpine build/home/alpine /home/alpine
 
