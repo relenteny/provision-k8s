@@ -6,7 +6,7 @@ cwd=$(pwd)
 
 cluster_domain="$(hostname | tr '[:upper:]' '[:lower:]').com"
 cluster_hostname="local.k8s.${cluster_domain}"
-registry_hostname="local.k8s.registry.${cluster_domain}"
+registry_hostname="registry.local.k8s.${cluster_domain}"
 cluster_support_namespace="cluster-support"
 provision_namespace="provision-k8s"
 cluster_configuration="development"
