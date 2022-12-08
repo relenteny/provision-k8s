@@ -7,13 +7,13 @@ cwd=$(pwd)
 # cluster_domain="$(hostname | tr '[:upper:]' '[:lower:]').com"
 cluster_domain="soltech.net"
 cluster_hostname="local.k8s.${cluster_domain}"
-registry_hostname="local.k8s.registry.${cluster_domain}"
+registry_hostname="registry.local.k8s.${cluster_domain}"
 cluster_support_namespace="cluster-support"
 provision_namespace="provision-k8s"
 cluster_configuration="development"
 
 provisioner_image_version="1.0.0"
-helm_dist_version="3.7.1"
+helm_dist_version="3.10.1"
 
 git_repo="git@github.com:soltechinc/provision-k8s.git"
 # TODO Update tag
