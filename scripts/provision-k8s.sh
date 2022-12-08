@@ -17,7 +17,7 @@ helm_dist_version="3.10.1"
 
 git_repo="git@github.com:soltechinc/provision-k8s.git"
 # TODO Update tag
-git_tag="soltech"
+git_tag="main"
 
 if [[ -z "${provision_directive}" ]]
 then
