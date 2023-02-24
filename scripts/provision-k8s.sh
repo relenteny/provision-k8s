@@ -33,6 +33,8 @@ then
     host_os="windows"
     helm_file="linux-amd64"
     windows_hosts="/mnt/c/Windows/System32/drivers/etc/hosts"
+    # Ensure .kube/config permissions are correct to prevent warning messages
+    chmod 600 ~/.kube/config
     if [[ ! -w "${windows_hosts}" ]]
     then
         echo " "

@@ -21,7 +21,6 @@ function validate_environment () {
         tar xf "${HOME}/config/ssh.tar"
         chmod 700 ${HOME}/.ssh
         chmod 600 ${HOME}/.ssh/*
-        chmod 644 ${HOME}/.ssh/*.pub
     fi
 
     if [[ -f "${HOME}/config/minikube-profiles.tar" && "${K8S_AUTH_CONTEXT}" == "minikube" ]]
