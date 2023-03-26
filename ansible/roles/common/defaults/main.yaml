@@ -24,20 +24,20 @@ production_cluster_configuration: "production"
 
 # Kubernetes Dashboard
 dashboard_release: "status"
-dashboard_version: "5.11.0"
+dashboard_version: "6.0.6"
 
 # Kubernetes Metrics Server
 metrics_server_release: "metrics-api"
-metrics_server_version: "3.8.2"
+metrics_server_version: "3.8.4"
 
 # NGINX cluster ingress
 cluster_ingress_release: "cluster-ingress"
-cluster_ingress_version: "4.3.0"
+cluster_ingress_version: "4.6.0"
 cluster_ingress_class: "nginx-cluster-support"
 
 # Kubeapps Helm Chart repo web interface
 kubeapps_release: "kubeapps"
-kubeapps_version: "12.0.0"
+kubeapps_version: "12.2.8"
 
 # Private Docker Registry
 registry_release: "cluster-registry"
@@ -45,8 +45,8 @@ registry_version: "1.0.0"
 
 # Prometheus Operator
 prometheus_release: "metrics"
-prometheus_version: "41.7.3"
+prometheus_version: "45.7.1"
 
 # Chartmuseum
 chartmuseum_release: "helmrepo"
-chartmuseum_version: "3.9.1"
+chartmuseum_version: "3.9.3"
