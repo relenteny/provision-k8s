@@ -17,7 +17,7 @@
 - name: Set install Registry
   set_fact:
     install_registry: true
-  when: cluster_configuration == development_cluster_configuration
+  when: cluster_configuration == development_cluster_configuration or cluster_configuration == production_cluster_configuration
 
 - name: Set install Kubeapps
   set_fact:
@@ -32,4 +32,4 @@
 - name: Set install Chartmuseum
   set_fact:
     install_chartmuseum: true
-  when: cluster_configuration == development_cluster_configuration
+  when: cluster_configuration == development_cluster_configuration or cluster_configuration == production_cluster_configuration
