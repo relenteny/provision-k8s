@@ -4,13 +4,9 @@
     - "kubectl create serviceaccount kubeapps-operator -n {{ cluster_support_namespace }}"
     - "kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount={{ cluster_support_namespace }}:kubeapps-operator"
 
-- name: Get Kubeapps secret
-  shell: "kubectl get secret -n {{ cluster_support_namespace }} $(kubectl get serviceaccount kubeapps-operator -n {{ cluster_support_namespace }} -o jsonpath='{.secrets[].name}') -o jsonpath='{.data.token}' | base64 -d"
-  register: secret_result
-
 - name: Initial helm command
   set_fact:
-    helm_command: helm install {{ kubeapps_release }} bitnami/kubeapps --namespace {{ cluster_support_namespace }} --version {{ kubeapps_version }} --set useHelm3=true
+    helm_command: helm install {{ kubeapps_release }} bitnami/kubeapps --namespace {{ cluster_support_namespace }} --version {{ kubeapps_version }}
 
 - name: Copy configuration files
   copy:
@@ -39,6 +35,14 @@
       type: Available
       status: "True"
     state: present
+
+- name: Get Kubeapps secret
+  shell: "kubectl apply -f /tmp/kubeapps/kubeapps-secret.yaml"
+  register: secret_result
+
+- name: Get Kubeapps secret
+  shell: "kubectl get --n {{ cluster_support_namespace }} secret kubeapps-operator-token -o go-template='{{.data.token | base64decode}}'"
+  register: secret_result
 
 - name: Delete configuration files
   file:
