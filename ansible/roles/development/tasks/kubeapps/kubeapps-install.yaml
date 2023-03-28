@@ -40,7 +40,7 @@
   shell: "kubectl apply -f /tmp/kubeapps/kubeapps-secret.yaml"
 
 - name: Get Kubeapps secret
-  shell: "kubectl get -n {{ ckuster_support_namespace }} secret kubeapps-operator-token -o jsonpath='{.data.token}' | base64 -d"
+  shell: "kubectl get -n {{ cluster_support_namespace }} secret kubeapps-operator-token -o jsonpath='{.data.token}' | base64 -d"
   register: secret_result
 
 - name: Delete configuration files
