@@ -36,12 +36,11 @@
       status: "True"
     state: present
 
-- name: Get Kubeapps secret
+- name: Create Kubeapps secret
   shell: "kubectl apply -f /tmp/kubeapps/kubeapps-secret.yaml"
-  register: secret_result
 
 - name: Get Kubeapps secret
-  shell: "kubectl get -n {{ cluster_support_namespace }} secret kubeapps-operator-token -o go-template='{{.data.token | base64decode}}'"
+  shell: "kubectl get -n {{ ckuster_support_namespace }} secret kubeapps-operator-token -o jsonpath='{.data.token}' | base64 -d"
   register: secret_result
 
 - name: Delete configuration files
