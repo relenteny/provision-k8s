@@ -41,7 +41,7 @@
   register: secret_result
 
 - name: Get Kubeapps secret
-  shell: "kubectl get --n {{ cluster_support_namespace }} secret kubeapps-operator-token -o go-template='{{.data.token | base64decode}}'"
+  shell: "kubectl get -n {{ cluster_support_namespace }} secret kubeapps-operator-token -o go-template='{{.data.token | base64decode}}'"
   register: secret_result
 
 - name: Delete configuration files
