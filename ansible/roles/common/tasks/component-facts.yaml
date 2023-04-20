@@ -9,6 +9,7 @@
 - name: Set install metrics server
   set_fact:
     install_metrics_server: true
+  when: cluster_configuration == production_cluster_configuration
 
 - name: Set install cluster ingress
   set_fact:
