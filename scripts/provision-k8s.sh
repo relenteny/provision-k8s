@@ -11,8 +11,10 @@ cluster_support_namespace="cluster-support"
 provision_namespace="provision-k8s"
 cluster_configuration="development"
 
-provisioner_image_version="1.0.0"
-helm_dist_version="3.10.1"
+provisioner_image_version="1.5.0"
+kubectl_version="1.27.4"
+helm_dist_version="3.12.3"
+sudo_command="sudo"
 
 git_repo="https://github.com/relenteny/provision-k8s.git"
 # TODO Update tag
@@ -49,15 +51,36 @@ then
         echo " "
         exit 1
     fi
+elif [[ ${uname} == "Linux" ]]
+then
+    host_os="linux"
+    helm_file="linux-amd64"
 else
-    if [[ ${uname} == "Linux" ]]
+    mingw_host=$(echo ${uname} | tr '[:upper:]' '[:lower:]' | grep "mingw")
+    if [[ -n "${mingw_host}" ]]
     then
-        host_os="linux"
+        host_os="windows"
+        sudo_command=""
         helm_file="linux-amd64"
+        windows_hosts="/c/Windows/System32/drivers/etc/hosts"
+        if [[ ! -w "${windows_hosts}" ]]
+        then
+            echo " "
+            echo "***** Windows hosts file is not writable *****"
+            echo " "
+            echo "The current process is unable to make changes to the Windows hosts table. In order to configure access"
+            echo "to the Kubernetes cluster, the Windows hosts file needs to be updated."
+            echo " "
+            echo "There are various methods available to handle this issue. The most straightforward is to execute this"
+            echo "script in a Git Bash session started with Administrator privileges (Run as administrator). Once the script has"
+            echo "succesfully executed, subsequent access to Kubernetes will not require Administrator privileges."
+            echo " "
+            exit 1
+        fi
     else
         echo "Unable to determine operating system."
         echo "Ensure you're running the script on a supported operating system and that, either"
-        echo "Docker for Mac/Windows or minikube are installed."
+        echo "Docker for Mac/Windows, minikube, or Rancher Desktop are installed."
         exit 1
     fi
 fi
@@ -131,13 +154,13 @@ then
     echo " "
     echo "Updating hosts table. You may be asked for your password."
     echo " "
-    grep -q -F "${hosts_ip}       ${registry_hostname}" /etc/hosts || echo "${hosts_ip}       ${registry_hostname}" | sudo tee -a /etc/hosts > /dev/null
-    grep -q -F "${hosts_ip}       ${cluster_hostname}" /etc/hosts || echo "${hosts_ip}       ${cluster_hostname}" | sudo tee -a /etc/hosts > /dev/null
+    grep -q -F "${hosts_ip}       ${registry_hostname}" /etc/hosts || echo "${hosts_ip}       ${registry_hostname}" | ${sudo_command} tee -a /etc/hosts > /dev/null
+    grep -q -F "${hosts_ip}       ${cluster_hostname}" /etc/hosts || echo "${hosts_ip}       ${cluster_hostname}" | ${sudo_command} tee -a /etc/hosts > /dev/null
 
     if [[ "${host_os}" == "windows" && -w "${windows_hosts}" ]]
     then
-        grep -q -F "${hosts_ip}       ${registry_hostname}" ${windows_hosts} || echo "${hosts_ip}       ${registry_hostname}" | sudo tee -a ${windows_hosts} > /dev/null
-        grep -q -F "${hosts_ip}       ${cluster_hostname}" ${windows_hosts} || echo "${hosts_ip}       ${cluster_hostname}" | sudo tee -a ${windows_hosts} > /dev/null
+        grep -q -F "${hosts_ip}       ${registry_hostname}" ${windows_hosts} || echo "${hosts_ip}       ${registry_hostname}" | ${sudo_command} tee -a ${windows_hosts} > /dev/null
+        grep -q -F "${hosts_ip}       ${cluster_hostname}" ${windows_hosts} || echo "${hosts_ip}       ${cluster_hostname}" | ${sudo_command} tee -a ${windows_hosts} > /dev/null
     fi
 fi
 
@@ -180,26 +203,33 @@ then
     readme_filename=$(kubectl get configmap ${readme_configmap} -n ${provision_namespace} -o jsonpath='{.data.filename}')
     kubectl get configmap ${readme_configmap} -n ${provision_namespace} -o jsonpath='{.data.content}' > ${HOME}/kubernetes/readme/${readme_filename}
 
-    curl -s https://get.helm.sh/helm-v${helm_dist_version}-${helm_file}.tar.gz -o helm.tar.gz
-    tar xf helm.tar.gz
-    mkdir -p "${HOME}/.local/bin"
-    cp ${helm_file}/helm "${HOME}/.local/bin/"
-    echo " "
-    echo "The helm command, version ${helm_dist_version}, has been installed in ${HOME}/.local/bin. Ensure"
-    echo "${HOME}/.local/bin has been set in \$PATH."
-    echo " "
-    rm -rf ${helm_file}
-    rm helm.tar.gz
+    command -v helm version >/dev/null
+    if [[ $? == 1 ]]
+    then
+        curl -s https://get.helm.sh/helm-v${helm_dist_version}-${helm_file}.tar.gz -o helm.tar.gz
+        tar xf helm.tar.gz
+        mkdir -p "${HOME}/.local/bin"
+        cp ${helm_file}/helm "${HOME}/.local/bin/"
+        echo " "
+        echo "The helm command, version ${helm_dist_version}, has been installed in ${HOME}/.local/bin. Ensure"
+        echo "${HOME}/.local/bin has been set in \$PATH."
+        echo " "
+        rm -rf ${helm_file}
+        rm helm.tar.gz
+        helm_bindir="${HOME}/.local/bin/"
+    else
+        helm_bindir=""
+    fi
 
     if [[ "${cluster_configuration}" == "development" ]]
     then
-        "${HOME}/.local/bin/helm" repo remove local >/dev/null 2>&1
-        "${HOME}/.local/bin/helm" repo add local http://${cluster_hostname}/chartmuseum
+        "${helm_bindir}helm" repo remove local >/dev/null 2>&1
+        "${helm_bindir}helm" repo add local http://${cluster_hostname}/chartmuseum
 
-        "${HOME}/.local/bin/helm" repo remove bitnami >/dev/null 2>&1
-        "${HOME}/.local/bin/helm" repo add bitnami https://charts.bitnami.com/bitnami
+        "${helm_bindir}helm" repo remove bitnami >/dev/null 2>&1
+        "${helm_bindir}helm" repo add bitnami https://charts.bitnami.com/bitnami
 
-        "${HOME}/.local/bin/helm" repo update
+        "${helm_bindir}helm" repo update
     fi
 
     cd "${HOME}/kubernetes/readme" || { echo "Error with readme directory."; exit 1; }
