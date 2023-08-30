@@ -30,7 +30,6 @@
 - name: Set ingress class
   set_fact:
     cluster_ingress_class: nginx
-  when: deployment_platform == minikube_platform or deployment_platform == docker_desktop_platform
 
 - name: Set output directory, if not set
   set_fact:
