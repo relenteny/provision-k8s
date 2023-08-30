@@ -9,10 +9,12 @@
 - name: Set install metrics server
   set_fact:
     install_metrics_server: true
+  when: deployment_platform == docker_desktop_platform or deployment_platform == minikube_platform
 
 - name: Set install cluster ingress
   set_fact:
     install_cluster_ingress: true
+  when: deployment_platform == docker_desktop_platform or deployment_platform == minikube_platform
 
 - name: Set install Registry
   set_fact:

@@ -39,10 +39,15 @@
     cluster_configuration: "{{ basic_cluster_configuration }}"
   when: cluster_configuration is not defined
 
-- name: Set ingress class
+- name: Set NGINX ingress class
   set_fact:
     cluster_ingress_class: nginx
   when: deployment_platform == minikube_platform or deployment_platform == docker_desktop_platform
+
+- name: Set Traefik ingress class
+  set_fact:
+    cluster_ingress_class: nginx
+  when: deployment_platform == rancher_desktop_platform
 
 - name: Set output directory, if not set
   set_fact:
