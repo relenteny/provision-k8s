@@ -12,8 +12,8 @@ cluster_support_namespace: "{{ lookup('env','CLUSTER_SUPPORT_NAMESPACE') }}"
 # Platform on which the cluster is running
 # Docker for Desktop (Mac or Windows)
 docker_desktop_platform: "docker-desktop"
-# Minikube (currently not supported)
 minikube_platform: "minikube"
+rancher_desktop_platform: "rancher-desktop"
 
 # Cluster configurations
 basic_cluster_configuration: "basic"

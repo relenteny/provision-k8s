@@ -1,23 +1,23 @@
 ################################################################################
-# Image: k8s-provisioner:1.0.0
+# Image: k8s-provisioner:1.5.0
 ################################################################################
 
 FROM relenteny/ansible:2.9.12
 
-LABEL com.solutechconsulting.repository.url=https://github.com/relenteny/provision-k8s/images/k8s-provisioner
-LABEL com.solutechconsulting.repository.tag=1.0.0
-LABEL com.solutechconsulting.ansible.version=2.9.12
+LABEL repository.url=https://github.com/relenteny/provision-k8s/images/k8s-provisioner
+LABEL repository.tag=1.5.0
+LABEL ansible.version=2.9.12
 
-ARG KUBERNETES_VERSION=1.25.2
-ARG HELM_VERSION=3.10.1
-ARG DOCKER_VERSION=20.10.20
+ARG KUBERNETES_VERSION=1.27.4
+ARG HELM_VERSION=3.12.3
+ARG DOCKER_VERSION=24.0.5
 
 COPY --chown=alpine:alpine build/home/alpine /home/alpine
 
 USER root
 
 RUN set -x && \
-    apk add --no-cache sudo openssh-client openssl && \
+    apk add --no-cache sudo openssh-client openssl jq && \
     curl -s https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -o docker.tar.gz && \
     tar xf docker.tar.gz && \
     sudo mv docker/docker /usr/local/bin/ && \

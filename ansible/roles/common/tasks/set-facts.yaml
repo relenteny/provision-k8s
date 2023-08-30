@@ -4,8 +4,13 @@
   when: deployment_platform is undefined
 
 - name: Get name of first node to determine deployment platform
-  shell: kubectl get nodes | sed '2q;d' | cut -f1 -d' '
+  shell: kubectl get nodes -o json | jq '.items[0].metadata.name' | xargs
   register: node_name
+  when: deployment_platform == ""
+
+- name: Check for Rancher Desktop
+  shell: kubectl get nodes -o json | jq '.items[0].status.nodeInfo.osImage' | xargs | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -f1,2 -d'-'
+  register: rancher_os
   when: deployment_platform == ""
 
 - name: Check if Minikube platform
@@ -21,6 +26,13 @@
   when:
     - deployment_platform == ""
     - node_name.stdout == docker_desktop_platform
+
+- name: Check if Rancher Desktop platform
+  set_fact:
+    deployment_platform: "{{ rancher_desktop_platform }}"
+  when:
+    - deployment_platform == ""
+    - rancher_os.stdout == rancher_desktop_platform
 
 - name: Set cluster configuration
   set_fact:
