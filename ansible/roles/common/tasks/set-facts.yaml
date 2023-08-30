@@ -13,9 +13,6 @@
   register: rancher_os
   when: deployment_platform == ""
 
--  debug: 
-      msg: "{{ rancher_os }}"
-             
 - name: Check if Minikube platform
   set_fact:
     deployment_platform: "{{ minikube_platform }}"
