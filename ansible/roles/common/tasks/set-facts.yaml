@@ -13,6 +13,9 @@
   register: rancher_os
   when: deployment_platform == ""
 
+-  debug: 
+      msg: "{{ rancher_os }}"
+             
 - name: Check if Minikube platform
   set_fact:
     deployment_platform: "{{ minikube_platform }}"
@@ -26,8 +29,6 @@
   when:
     - deployment_platform == ""
     - node_name.stdout == docker_desktop_platform
-
-- shell: kubectl get nodes -o json | jq '.items[0].status.nodeInfo.osImage' | xargs | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -f1,2 -d'-'
 
 - name: Check if Rancher Desktop platform
   set_fact:
