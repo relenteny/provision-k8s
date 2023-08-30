@@ -27,6 +27,8 @@
     - deployment_platform == ""
     - node_name.stdout == docker_desktop_platform
 
+- shell: echo "{{ rancher_os.stdout }}"
+
 - name: Check if Rancher Desktop platform
   set_fact:
     deployment_platform: "{{ rancher_desktop_platform }}"
@@ -46,7 +48,7 @@
 
 - name: Set Traefik ingress class
   set_fact:
-    cluster_ingress_class: nginx
+    cluster_ingress_class: traefik
   when: deployment_platform == rancher_desktop_platform
 
 - name: Set output directory, if not set
