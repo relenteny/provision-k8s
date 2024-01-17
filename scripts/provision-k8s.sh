@@ -144,6 +144,7 @@ then
     fi
 
     cd images/k8s-provisioner || { echo "Error with images/k8s-provisioner directory."; exit 1; }
+    docker pull relenteny/ansible:2.9.12
     docker build . --tag k8s-provisioner:${provisioner_image_version}
 fi
 
