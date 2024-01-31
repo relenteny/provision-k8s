@@ -8,6 +8,12 @@
   register: node_name
   when: deployment_platform == ""
 
+- name: Check for Rancher Desktop
+  shell: kubectl get nodes -o json | jq '.items[0].status.nodeInfo.osImage' | xargs | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -f1,2 -d'-'
+  register: rancher_os
+  when: deployment_platform == ""
+
+- name: Check if Minikube platform
 - name: Check if Minikube platform
   set_fact:
     deployment_platform: "{{ minikube_platform }}"
@@ -27,7 +33,8 @@
     deployment_platform: "{{ rancher_desktop_platform }}"
   when:
     - deployment_platform == ""
-    - node_name.stdout is search("rancher")
+    - node_name.stdout is search("rancher") or
+      rancher_os.stdout is search("rancher")
 
 - name: Set cluster configuration
   set_fact:
