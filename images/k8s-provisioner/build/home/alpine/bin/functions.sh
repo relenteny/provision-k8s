@@ -15,7 +15,7 @@ function validate_environment () {
 
     if [[ -n "${CLUSTER_IP}" ]]
     then
-        sed -i "s|server: https://127.0.0.1:6443|https://${cluster_ip}:6443|" ${HOME}/.kube/config
+        sed -i "s|server: https://127.0.0.1:6443|server: https://${cluster_ip}:6443|" ${HOME}/.kube/config
     fi
 
     export K8S_AUTH_CONTEXT=$(kubectl config current-context)
