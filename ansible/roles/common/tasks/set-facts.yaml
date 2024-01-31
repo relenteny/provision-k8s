@@ -14,7 +14,6 @@
   when: deployment_platform == ""
 
 - name: Check if Minikube platform
-- name: Check if Minikube platform
   set_fact:
     deployment_platform: "{{ minikube_platform }}"
   when:
