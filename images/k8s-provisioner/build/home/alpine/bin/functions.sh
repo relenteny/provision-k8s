@@ -13,6 +13,11 @@ function validate_environment () {
     cp ${HOME}/config/config ${HOME}/.kube
     chmod 600 ${HOME}/.kube/*
 
+    if [[ -n "${CLUSTER_IP}" ]]
+    then
+        sed "s|server: https://127.0.0.1:6443|https://${cluster_ip}:6443|" ${HOME}/.kube/config
+    fi
+
     export K8S_AUTH_CONTEXT=$(kubectl config current-context)
 
     if [[ -f "${HOME}/config/ssh.tar" ]]
