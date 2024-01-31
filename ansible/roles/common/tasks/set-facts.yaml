@@ -27,7 +27,7 @@
     deployment_platform: "{{ rancher_desktop_platform }}"
   when:
     - deployment_platform == ""
-    - when 'rancher' in node_name.stdout
+    - node_name.stdout is search("rancher")
 
 - name: Set cluster configuration
   set_fact:
