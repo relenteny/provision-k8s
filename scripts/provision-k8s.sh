@@ -181,6 +181,7 @@ echo "README_CONFIGMAP=${readme_configmap}" >> scripts/pod-env.txt
 
 check_rancher=$(kubectl get node | grep rancher)
 if [[ -n "${check_rancher}" ]]
+then
     cluster_ip=$(kubectl get node -o yaml | grep k3s.io/external-ip | cut -d':' -f2 | xargs)
     echo "CLUSTER_IP=${cluster_ip}" >> scripts/pod-env.txt
 fi
