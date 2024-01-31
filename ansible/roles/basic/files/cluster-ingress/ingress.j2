@@ -11,5 +11,11 @@ controller:
   admissionWebhooks:
     enabled: false
 
+  service:
+    type: NodePort
+
+  image:
+    allowPrivilegeEscalation: true
+
 ingress:
   host: "{{ cluster_hostname }}"

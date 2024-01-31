@@ -8,11 +8,6 @@
   register: node_name
   when: deployment_platform == ""
 
-- name: Check for Rancher Desktop
-  shell: kubectl get nodes -o json | jq '.items[0].status.nodeInfo.osImage' | xargs | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | cut -f1,2 -d'-'
-  register: rancher_os
-  when: deployment_platform == ""
-
 - name: Check if Minikube platform
   set_fact:
     deployment_platform: "{{ minikube_platform }}"
@@ -32,7 +27,7 @@
     deployment_platform: "{{ rancher_desktop_platform }}"
   when:
     - deployment_platform == ""
-    - rancher_os.stdout == rancher_desktop_platform
+    - when 'rancher' in node_name.stdout
 
 - name: Set cluster configuration
   set_fact:
@@ -42,12 +37,7 @@
 - name: Set NGINX ingress class
   set_fact:
     cluster_ingress_class: nginx
-  when: deployment_platform == minikube_platform or deployment_platform == docker_desktop_platform
-
-- name: Set Traefik ingress class
-  set_fact:
-    cluster_ingress_class: traefik
-  when: deployment_platform == rancher_desktop_platform
+  when: deployment_platform == minikube_platform or deployment_platform == docker_desktop_platform or deployment_platform == rancher_desktop_platform
 
 - name: Set output directory, if not set
   set_fact:
