@@ -4,6 +4,7 @@
 # Project
 Chart.lock
 **/charts/*.tgz
+!docker-registry-1.14.0.tgz
 scripts/*.tar
 
 # Mac
