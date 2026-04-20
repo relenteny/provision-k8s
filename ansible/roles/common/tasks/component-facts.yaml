@@ -4,7 +4,7 @@
 
 - name: Set install Dashboard
   set_fact:
-    install_dashboard: true
+    install_dashboard: false
 
 - name: Set install metrics server
   set_fact:
