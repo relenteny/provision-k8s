@@ -37,7 +37,6 @@ USER alpine
 
 RUN set -x && \
     chmod +x /home/alpine/bin/*.sh && \
-    pip install --upgrade pip && \
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && \
     helm repo add twuni https://twuni.github.io/docker-registry.helm && \
     helm repo add chartmuseum https://chartmuseum.github.io/charts && \
