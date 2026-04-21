@@ -17,7 +17,7 @@ COPY --chown=alpine:alpine build/home/alpine /home/alpine
 USER root
 
 RUN set -x && \
-    apk add --no-cache sudo openssh-client openssl jq && \
+    apk add --no-cache sudo openssh-client openssl jq cargo rust gcc musl-dev libffi-dev openssl-dev && \
     curl -s https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -o docker.tar.gz && \
     tar xf docker.tar.gz && \
     sudo mv docker/docker /usr/local/bin/ && \
