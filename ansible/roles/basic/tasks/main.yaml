@@ -17,11 +17,11 @@
 
 - name: Kubernetes Dashboard
   include_tasks: dashboard/dashboard-main.yaml
-  when: install_dashboard is defined
+  when: install_dashboard is true
 
 - name: Metrics Server
   include_tasks: metrics-server/metrics-server-main.yaml
-  when: install_metrics_server is defined
+  when: install_metrics_server is true
 
 - name: Update README content
   include_tasks: templates/readme/add-readme-section.yaml
